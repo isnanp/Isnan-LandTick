@@ -1,0 +1,55 @@
+@import url('https://fonts.cdnfonts.com/css/opticon');
+@import url('https://fonts.cdnfonts.com/css/avenir');
+
+body {
+    font-family: 'Avenir', sans-serif !important;
+}
+
+.logoText {
+    font-family: 'Opticon', sans-serif;
+    color: #EC7AB7 !important; 
+}
+
+.loginForm {
+    width: 25%;
+    box-shadow: 0 0 10px #bbbbbb;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5rem;
+}
+
+.formTitle {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.grad {
+    background-image: linear-gradient(#EC7AB7, #EC7A7A);
+}
+
+.gradJumbotron {
+    background-image: linear-gradient(120deg ,#EC7AB7, #EC7A7A);
+}
+
+
+
+.textGrad {
+    color:#bbbbbb
+}
+
+.textArea {
+    resize: none !important;
+}   
+
+.overFlow {
+    overflow: auto !important;
+}
+
+.activeFormTicket {
+    border-style: solid;
+    border-width: 0 0 0 0.5rem !important;
+    border-color:#E67E22 !important; 
+}
