@@ -58,7 +58,7 @@ export default function InvoiceComp(props) {
 						<h1>Rincian Harga</h1>
 						<Container className="border border-1 shadow">
 							<Row className="p-3">
-								<Col>{props?.name_train} x {props?.qty} </Col>
+								<Col>{props?.name_train} x 1 </Col>
 								<Col>{props?.priceTicket}</Col>
 							</Row>
 							<Row className="p-3" style={{backgroundColor:"#E6E6E6"}}>

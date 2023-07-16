@@ -17,7 +17,7 @@ export default function InvoicePage() {
 
     return (
         <>
-            <InvoiceComp key={transaction?.id} id={transaction?.id} name_train={transaction?.ticket.name_train} type_train={transaction?.ticket.type_train} qty={transaction?.qty} priceTicket={transaction?.ticket.price} priceTransaction={transaction?.price} start_date={transaction?.ticket.start_date} start_time={transaction?.ticket.start_time} arrival_time={transaction?.ticket.arrival_time} start_town={transaction?.ticket.start_station.kota} start_station={transaction?.ticket.start_station.name} arrival_town={transaction?.ticket.destination_station.kota} arrival_station={transaction?.ticket.destination_station.name} />
+            <InvoiceComp key={transaction?.id} id={transaction?.id} name_train={transaction?.ticket.name_train} type_train={transaction?.ticket.type_train} qty={transaction?.qty} priceTicket={transaction?.ticket.price} priceTransaction={transaction?.ticket.price} start_date={transaction?.ticket.start_date} start_time={transaction?.ticket.start_time} arrival_time={transaction?.ticket.arrival_time} start_town={transaction?.ticket.start_station.kota} start_station={transaction?.ticket.start_station.name} arrival_town={transaction?.ticket.destination_station.kota} arrival_station={transaction?.ticket.destination_station.name} />
         <Footer />
         </>
     )

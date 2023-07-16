@@ -89,15 +89,26 @@ func (h *transactionsHandlers) GetTransaction(c echo.Context) error {
 func (h *transactionsHandlers) DeleteTransaction(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	product, err := h.TransactionRepository.GetTransaction(id)
+	transaction, err := h.TransactionRepository.GetTransaction(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: "Failed", Message: err.Error()})
 	}
 
-	data, err := h.TransactionRepository.DeleteTransaction(product, id)
+	data, err := h.TransactionRepository.DeleteTransaction(transaction, id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Status: "Failed", Message: err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{Status: "Success", Data: data})
+}
+
+func (h *transactionsHandlers) GetTransactionByUser(c echo.Context) error {
+	userLogin := c.Get("userLogin")
+	userId := int(userLogin.(jwt.MapClaims)["id"].(float64))
+
+	transactions, err := h.TransactionRepository.GetTransactionByUser(userId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: "Failed", Message: err.Error()})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{Status: "success", Data: transactions})
 }

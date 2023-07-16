@@ -52,10 +52,10 @@ export default function ModalDetail(props) {
                             <p className="text-muted">{transaction?.ticket.start_date}</p>
                         </Col>
                         <Col>
-                            <h4>{transaction?.ticket.start_station.kota}</h4>
-                            <p className="text-muted">{transaction?.ticket.start_station.name}</p>
-                            <h4>{transaction?.ticket.destination_station.kota}</h4>
-                            <p className="text-muted">{transaction?.ticket.destination_station.name}</p>
+                            <h4>{transaction?.ticket.start_station.name}</h4>
+                            <p className="text-muted">{transaction?.ticket.start_station.kota}</p>
+                            <h4>{transaction?.ticket.destination_station.name}</h4>
+                            <p className="text-muted">{transaction?.ticket.destination_station.kota}</p>
                         </Col>
                     </Row>
 
@@ -75,9 +75,9 @@ export default function ModalDetail(props) {
             </Row>
             <Row className="text-muted" style={{marginLeft:"1rem"}}>
                 <Col>24907104021740</Col>
-                <Col>Isnan</Col>
-                <Col>0823810237</Col>
-                <Col>Isnan@gmail.com</Col>
+                <Col>{transaction?.user.fullname}</Col>
+                <Col>{transaction?.user.telphone}</Col>
+                <Col>{transaction?.user.email}</Col>
             </Row>
 
             <hr style={{border:"2px solid black"}} />

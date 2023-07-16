@@ -7,4 +7,5 @@ type TransactionResponse struct {
 	User   models.UserResponse   `json:"user"`
 	Ticket models.TicketResponse `json:"ticket"`
 	Image  string                `json:"image" form:"image"`
+	Status string                `json:"status"`
 }

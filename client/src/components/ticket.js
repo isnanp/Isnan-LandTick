@@ -14,9 +14,6 @@ export default function Ticket(props) {
 
     return (
         <div style={{marginBottom:"10.6rem"}}>  
-            <div className="mt-5 ms-5">
-            <h1 className="ms-5">Ticket Saya</h1>
-            </div>
             <Container className="shadow pb-3" style={{border: "1px solid #B7B7B7", borderRadius:"5px", padding:"0", width:"75%"}}>
                     <Row>
                         <Col>
@@ -36,7 +33,7 @@ export default function Ticket(props) {
                         <Col className="me-5">
                         <h3><b>{props?.nama}</b></h3>
                         <h5>{props?.kelas}</h5>
-                        { props.status ? (
+                        { props.status !== "pending" ? (
                             <div className="text-center" style={{textAlign:"center", background: "#95fc95", width:"max-content", borderRadius:"3px"}}>
                             <p style={{margin:"10px", color:"green"}}>Approved</p>
                         </div>
@@ -65,7 +62,7 @@ export default function Ticket(props) {
                             <h4>{props?.kotaAkhir}</h4>
                             <p className="text-muted">{props?.akhir}</p>
                         </Col>
-                        {props?.status ? ( 
+                        {props?.status !== "pending" ? ( 
                             <img style={{objectFit:"cover", width:"9rem"}} src={Barcode} alt="barcode" />
                         ) : (
                             <span></span>
@@ -88,7 +85,7 @@ export default function Ticket(props) {
                                 <Col>{user?.email}</Col>
                             </Row>
                         </Col>
-                        {props.status? (<span></span>) : (
+                        {props.status !== "pending"? (<span></span>) : (
                             <Col md="2" className="d-flex align-items-center">
                                 <Link to={`/invoice/${props.id}`}><Button className="grad px-3">Bayar Sekarang</Button></Link>  
                             </Col>

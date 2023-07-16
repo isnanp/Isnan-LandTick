@@ -45,6 +45,7 @@ export default function TicketForm() {
     try {
         const id_ticket = new FormData()
         id_ticket.set("ticket_id", id)
+        console.log(id)
         const response = await API.post("/transaction", id_ticket);
         handleShowSuccess(response.data.data.id)
         

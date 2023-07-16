@@ -8,9 +8,9 @@ import Invoice from "./pages/InvoicePage";
 import ListTransaksi from "./pages/ListTransaksi";
 import TambahTiketPage from "./pages/tambahTicketPage";
 import {PrivateRoute, PrivateRouteAdmin} from "./components/privateRoute";
-import TicketApproved from "./pages/ticketApproved";
 import { UserContext } from "./context/usercontext";
 import { API, setAuthToken } from "./config/api";
+import MyTicketList from "./pages/myTicketList";
 
 function App() {
   const [state, dispatch] = useContext(UserContext)
@@ -66,11 +66,11 @@ function App() {
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/ticket/:id" element={<TicketDetail />} />
           <Route path="/invoice/:id" element={<Invoice />} />
+          <Route path="/myticket/" element={<MyTicketList />} />
         </Route>
         <Route path="/" element={<PrivateRouteAdmin />}>
           <Route path="/list-transaksi" element={<ListTransaksi />} />
           <Route path="/tambah-ticket" element={<TambahTiketPage />} />
-          <Route path="/myticket/:id" element={<TicketApproved />} />
         </Route>
       </Routes>
       </>

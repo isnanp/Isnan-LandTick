@@ -9,11 +9,11 @@ import Logout from "../assets/images/logout 1.png"
 import Bill from "../assets/images/bill 1.png"
 import TicketICon from "../assets/images/ticketIcon.png"
 import TambahTicket from "../assets/images/TambahTicket.png"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 
 export default function NavbarPage() {
-    
+    const navigate = useNavigate()
 
     const [showLogin, setShowLogin] = useState(false);
     const handleCloseLogin = () => setShowLogin(false);
@@ -69,7 +69,7 @@ export default function NavbarPage() {
 
                                 <Dropdown.Menu>
                                     <Link to="/ticket/0" style={{textDecoration:"none"}}>
-                                    <Dropdown.Item href="#/action-1"> <img src={TicketICon} alt="bill" style={{height:"1rem", paddingRight:"3px"}} /> Tiket Saya</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => navigate("/myticket")}> <img src={TicketICon} alt="bill" style={{height:"1rem", paddingRight:"3px"}} /> Tiket Saya</Dropdown.Item>
                                     </Link>
                                     <Link to="/invoice" style={{textDecoration:"none"}}>
                                     <Dropdown.Item href="#/action-2"> <img src={Bill} alt="bill" style={{height:"1rem", paddingRight:"3px"}} /> Payment</Dropdown.Item>
