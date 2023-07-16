@@ -1,8 +1,18 @@
 import { Modal, Row, Col, Container } from "react-bootstrap"
 import Logo from "../../assets/images/trainwhite.png"
 import Barcode from "../../assets/images/barcode.png"
+import { useQuery } from "react-query";
+import { API } from "../../config/api";
 
 export default function ModalDetail(props) {
+    let { data: transaction } = useQuery(["transactionCache", props.id], async () => {
+    const response = await API.get(`/transaction/${props?.id}`);
+    console.log("ini modal detail", response)
+    return response.data.data;
+    });
+
+
+
     return (
         <>
 
@@ -20,15 +30,15 @@ export default function ModalDetail(props) {
         
 
             <h2>INVOICE</h2>
-            <p className="text-muted">Kode Invoice : INV0101</p>
+            <p className="text-muted">Kode Invoice : INV{transaction?.id}</p>
 
             <Row>
                 <Col>
                     <h3>Kereta Api</h3>
                     <p>Saturday, 21 Febuari 2020</p>
                     <br />
-                    <h3>Argo Wilis</h3>
-                    <p>Eksekutif(H)</p>
+                    <h3>{transaction?.ticket.name_train}</h3>
+                    <p>{transaction?.ticket.type_train}</p>
                     <Row>
                         <Col sm="1" className="pt-2">
                             <div style={{borderColor:"pink",borderRadius:"50%", borderStyle:"solid", borderWidth:"2px", width:"1rem", height:"1rem"}}></div>
@@ -36,16 +46,16 @@ export default function ModalDetail(props) {
                             <div style={{borderColor:"pink",borderRadius:"50%", borderStyle:"solid", borderWidth:"2px", width:"1rem", height:"1rem", background:"pink"}}></div>
                         </Col>
                         <Col>
-                            <h4>05.00</h4>
-                            <p className="text-muted">21 feb 2023</p>
-                            <h4>10.00</h4>
-                            <p className="text-muted">21 feb 2023</p>
+                            <h4>{transaction?.ticket.start_time}</h4>
+                            <p className="text-muted">{transaction?.ticket.start_date}</p>
+                            <h4>{transaction?.ticket.arrival_time}</h4>
+                            <p className="text-muted">{transaction?.ticket.start_date}</p>
                         </Col>
                         <Col>
-                            <h4>Jakarta</h4>
-                            <p className="text-muted">Stasiun Gambir</p>
-                            <h4>Surabaya</h4>
-                            <p className="text-muted">Stasiun Surabaya</p>
+                            <h4>{transaction?.ticket.start_station.kota}</h4>
+                            <p className="text-muted">{transaction?.ticket.start_station.name}</p>
+                            <h4>{transaction?.ticket.destination_station.kota}</h4>
+                            <p className="text-muted">{transaction?.ticket.destination_station.name}</p>
                         </Col>
                     </Row>
 
@@ -74,7 +84,7 @@ export default function ModalDetail(props) {
 
             <Container fluid className="d-flex align-item-center justify-content-between p-1" style={{backgroundColor:"lightgray"}}>
                 <h2>TOTAL</h2>
-                <h2>Rp.250.000</h2>
+                <h2>{transaction?.price}</h2>
             </Container>
 
       </Modal.Body>

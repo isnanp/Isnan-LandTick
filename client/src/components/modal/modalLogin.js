@@ -36,7 +36,7 @@ export default function Login(props) {
         payload: response.data.data,
       });
 
-       setAuthToken(response.data.data.token);
+       setAuthToken(localStorage.token);
       console.log(response.data.data);
        if (response.data.data.role === "admin") {
         navigate('/list-transaksi');

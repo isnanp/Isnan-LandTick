@@ -2,7 +2,6 @@ import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function ModalSuccess(props) {
-    console.log(props.index)
     return (
         <>
         <Modal show={props.onShow} onHide={props.onHide}>

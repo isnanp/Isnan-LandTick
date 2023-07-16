@@ -1,9 +1,8 @@
 import InvoiceComp from "../components/invoice";
 import Footer from "../components/footer";
 import { useParams } from "react-router-dom";
-import { Kereta } from "../fakeData/datadummy";
-import { useQueries, useQuery } from "react-query";
 import { API } from "../config/api";
+import { useQuery } from "react-query";
 
 export default function InvoicePage() {
     let p = useParams()
