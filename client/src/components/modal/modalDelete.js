@@ -6,7 +6,7 @@ export default function Konfirmasi(props) {
     
   const Delete = useMutation(async () => {
     try {
-      await API.delete(`/product/${props.id}`);
+      await API.delete(`/transaction-delete/${props.id}`);
       alert(`Successfully deleted`);
       props.onHide()
     } catch (error) {
@@ -25,7 +25,7 @@ export default function Konfirmasi(props) {
                     Apakah anda yakin untuk menghapus transaksi ini?
                 </div>
                 <div className="text-end mt-5">
-                    <Button onClick={Delete.mutate()} size="sm" className="btn-success me-2" style={{ width: '135px' }}>Ya</Button>
+                    <Button onClick={() => Delete.mutate()} size="sm" className="btn-success me-2" style={{ width: '135px' }}>Ya</Button>
                     <Button onClick={props.onHide} size="sm" className="btn-danger" style={{ width: '135px' }}>Tidak</Button>
                 </div>
             </Modal.Body>

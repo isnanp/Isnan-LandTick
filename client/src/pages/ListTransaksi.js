@@ -25,7 +25,7 @@ export default function ListTransaksiPage() {
     const handleCloseDelete = () => setShowDelete(false);
     const handleShowDelete = () => setShowDelete(true);
 
-    let { data: Transaction } = useQuery("transactionCache", async () => {
+    let { data: Transaction } = useQuery("transactionlistCache", async () => {
     const response = await API.get("/transactions");
     console.log(response.data.data);
     return response.data.data;
@@ -52,9 +52,9 @@ export default function ListTransaksiPage() {
                 <Col> buktiTf.png </Col>
                 <Col>{data?.status}</Col>
                 <Col>
-                    <Button variant="transparent" onClick={() => {handleShowDetail(); setTransactionID(data.id)}}> <img src={Search} alt="src" />  </Button> 
-                    <Button variant="transparent" onClick={() => {handleShowStatus(); setTransactionID(data.id)}}> <img src={Edit} alt="edit" /> </Button>
-                    <Button variant="transparent" onClick={() => {handleShowDelete(); setTransactionID(data.id)}}> <img src={Trash} alt="trash" /> </Button>
+                    <Button variant="transparent" onClick={() => {handleShowDetail(); setTransactionID(data?.id)}}> <img src={Search} alt="src" />  </Button> 
+                    <Button variant="transparent" onClick={() => {handleShowStatus(); setTransactionID(data?.id)}}> <img src={Edit} alt="edit" /> </Button>
+                    <Button variant="transparent" onClick={() => {handleShowDelete(); setTransactionID(data?.id)}}> <img src={Trash} alt="trash" /> </Button>
                 </Col>
             </Row>
             ))}
