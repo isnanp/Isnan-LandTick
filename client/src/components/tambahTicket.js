@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 
 export default function TambahTicket() {
-    let { data: stations } = useQuery("stationsCache", async () => {
+    let { data: stations } = useQuery("stationszCache", async () => {
     const response = await API.get("/stations");
+    console.log("ini log stations",response.data.data);
     return response.data.data;
     });
 
@@ -119,7 +120,7 @@ export default function TambahTicket() {
                 <option hidden>Start Station</option>
                 {stations?.map((item) => (
                     <option key={item?.id} value={item?.id}>
-                        {item.name}
+                        {item?.name}
                     </option>
                 ))}
 

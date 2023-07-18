@@ -4,21 +4,22 @@ import IconForm from "../assets/images/Rounded.png"
 import TiketList from "./ticketList";
 import ModalSuccess from "./modal/modalSuccess";
 import LoginModal from "./modal/modalLogin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "../context/usercontext";
 import { useContext } from "react";
 import { API } from "../config/api";
 import { useMutation, useQuery } from "react-query";
 
 export default function TicketForm() {
-    let { data: tickets } = useQuery("tickets", async () => {
-    const response = await API.get("/tickets");
-    return response.data.data;
-    });
 
     const [state] = useContext(UserContext)
     const [showSuccess, setShowSuccess] = useState(false);
 
+    let { data: stations } = useQuery("stationCache", async () => {
+    const response = await API.get("/stations");
+    return response.data.data;
+    });
+    
     const handleCloseSuccess = () => {setShowSuccess(false)}
     const [ticketSelected, setTiketSelected] = useState()
     const handleShowSuccess = (a) => {
@@ -38,8 +39,52 @@ export default function TicketForm() {
         handleCloseLogin(false);
         setShowRegister(true);
     }
+    const [tickets, setTicket] = useState([])
 
+    const [filter, setfilter] = useState({
+        startStation : "",
+        DestinationStation : "",
+    })
+    
+    const OnChangeHandler = (e) => {
+    setfilter({
+      ...filter,
+      [e.target.name]: e.target.value,
+    });
+    };
+    console.log(filter)
 
+    let filtered = useQuery(["filteredCache", filter], async () => {
+    const response = await API.get(`/ticket/?start_station_id=${filter.startStation}&destination_station_id=${filter.DestinationStation}`);
+    console.log("ini log filter",response.data.data);
+    return response.data.data;
+    });
+
+    const {data : filteredTicket} = filtered
+    
+    let {data : nonFiltered} = useQuery("tiketCache", async () => {
+    const response = await API.get(`/tickets`);
+    console.log("ini log tickets",response.data.data);
+    return response.data.data;
+    })
+    const handleFilter = () => {
+        if (filteredTicket?.length > 0) {
+        setTicket(filteredTicket)
+    } else {
+        setTicket(nonFiltered)
+    }
+    }
+
+    const handleReset = () => {
+        setfilter({
+            startStation : "",
+            DestinationStation : "",
+        })
+    }
+    
+    useEffect(() => {
+        handleFilter()
+    }, [filteredTicket])
 
     const HandleBuy = useMutation(async (id) => {
     try {
@@ -74,10 +119,13 @@ export default function TicketForm() {
             <Row>
                 <Col>
                     <h5>Asal</h5>
-                    <Form.Select className="mb-3">
-                        <option value="Jakarta">Jakarta</option>
-                        <option value="Bandung">Bandung</option>
-                        <option value="Jogja">Jogja</option>
+                    <Form.Select className="mb-3" value={filter.startStation} name="startStation" onChange={OnChangeHandler}>
+                        <option hidden>Pilih disini</option>
+                        {stations?.map((item) => (
+                            <option key={item?.id} value={item?.id}>
+                                {item?.name}
+                            </option>
+                        ))}
                     </Form.Select>
                     <Row>
                         <Col>
@@ -99,10 +147,13 @@ export default function TicketForm() {
                 </Col>
                 <Col>
                     <h5>Tujuan</h5>
-                    <Form.Select className="mb-3">
-                        <option value="Jakarta">Jakarta</option>
-                        <option value="Bandung">Bandung</option>
-                        <option value="Jogja">Jogja</option>
+                    <Form.Select className="mb-3" value={filter.DestinationStation} name="DestinationStation" onChange={OnChangeHandler}>
+                        <option hidden>pilih disini</option>
+                        {stations?.map((item) => (
+                            <option key={item?.id} value={item?.id}>
+                                {item?.name}
+                            </option>
+                        ))}
                     </Form.Select>
                     <Row>
                         <Col>
@@ -126,7 +177,7 @@ export default function TicketForm() {
                             </Form.Select>
                         </Col>
                         <Col >
-                            <Button className="mt-4 grad">Cari Tiket</Button>
+                            <Button className="mt-4 grad" onClick={handleReset}>Reset Filter</Button>
                         </Col>
                     </Row>
                 </Col>
@@ -145,19 +196,12 @@ export default function TicketForm() {
                         <Col>Harga Per Orang</Col>
                     </Row>
                 
-                { state?.isLogin ? (
-                    tickets?.map((d) => 
-                    <div key={d.id} onClick={() => HandleBuy.mutate(d.id)} style={{cursor:"pointer"}}>
-                        <TiketList items={d} />
-                    </div>
-                    
-                    )
-                ) : (
-                    tickets?.map((d) => 
-                    <div key={d.id} onClick={handleShowLogin} style={{cursor:"pointer"}}>
+                
+                    {tickets?.map((d) => 
+                    <div key={d.id} onClick={state.isLogin ? (() => HandleBuy.mutate(d.id)):(handleShowLogin)} style={{cursor:"pointer"}}>
                        <TiketList items={d} />
                     </div>
-                ))}
+                    )}
                 
                     
 

@@ -6,7 +6,7 @@ import { API } from '../config/api';
 
 
 export default function TicketDetail() {
-    
+    let status = "pending";
     let p = useParams()
     let i = parseInt(p.id)
     let { data: transaction } = useQuery("ticketCache", async () => {
@@ -27,7 +27,7 @@ export default function TicketDetail() {
          <div className="mt-5 ms-5">
             <h1 className="ms-5">Ticket Saya</h1>
             </div>
-            <Ticket id={transaction?.id} status={transaction.status} nama={transaction?.ticket?.name_train} kelas={transaction?.ticket?.type_train} awal={transaction?.ticket?.start_station.name} kotaAwal={transaction?.ticket?.start_station.kota} akhir={transaction?.ticket?.destination_station.name} kotaAkhir={transaction?.ticket?.destination_station.kota} berangkat={transaction?.ticket?.start_time} tiba={transaction?.ticket?.arrival_time} />
+            <Ticket id={transaction?.id} status={status} nama={transaction?.ticket?.name_train} kelas={transaction?.ticket?.type_train} awal={transaction?.ticket?.start_station.name} kotaAwal={transaction?.ticket?.start_station.kota} akhir={transaction?.ticket?.destination_station.name} kotaAkhir={transaction?.ticket?.destination_station.kota} berangkat={transaction?.ticket?.start_time} tiba={transaction?.ticket?.arrival_time} />
             <Footer />
         </>
     )

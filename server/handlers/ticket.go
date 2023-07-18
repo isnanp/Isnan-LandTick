@@ -83,7 +83,6 @@ func (h *TicketHandlers) GetTicket(c echo.Context) error {
 }
 
 func (h *TicketHandlers) FilterTicket(c echo.Context) error {
-	date := c.QueryParam("start_date")
 	startStationIDParam := c.QueryParam("start_station_id")
 	destinationStationIDParam := c.QueryParam("destination_station_id")
 
@@ -105,7 +104,7 @@ func (h *TicketHandlers) FilterTicket(c echo.Context) error {
 		}
 	}
 
-	ticket, err := h.TicketRepositories.FilterTicket(date, startStationID, destinationStationID)
+	ticket, err := h.TicketRepositories.FilterTicket(startStationID, destinationStationID)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: "Error", Message: err.Error()})
 	}

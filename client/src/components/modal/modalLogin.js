@@ -29,7 +29,7 @@ export default function Login(props) {
       e.preventDefault();
 
       const response = await API.post("/login", formLogin)
-      alert("Register Success!");
+      alert("Login Success!");
 
       dispatch({
         type: "LOGIN_SUCCESS",

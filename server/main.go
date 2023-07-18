@@ -25,6 +25,6 @@ func main() {
 
 	e.Static("/uploads", "./uploads")
 
-	e.Logger.Fatal(e.Start("localhost:5000"))
+	e.Logger.Fatal(e.Start(":5000"))
 
 }
