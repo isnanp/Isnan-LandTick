@@ -44,6 +44,7 @@ export default function TicketForm() {
     const [filter, setfilter] = useState({
         startStation : "",
         DestinationStation : "",
+        qty : "1",
     })
     
     const OnChangeHandler = (e) => {
@@ -86,12 +87,14 @@ export default function TicketForm() {
         handleFilter()
     }, [filteredTicket])
 
-    const HandleBuy = useMutation(async (id) => {
+    const HandleBuy = useMutation(async (id, price) => {
     try {
-        const id_ticket = new FormData()
-        id_ticket.set("ticket_id", id)
-        console.log(id)
-        const response = await API.post("/transaction", id_ticket);
+        console.log(price)
+        let qty = parseInt(filter.qty)
+        const transaction = new FormData()
+        transaction.set("ticket_id", id)
+        transaction.set("qty", qty)
+        const response = await API.post("/transaction", transaction);
         handleShowSuccess(response.data.data.id)
         
         return response.data.data;
@@ -158,7 +161,7 @@ export default function TicketForm() {
                     <Row>
                         <Col>
                             <h5>Dewasa</h5>
-                                <Form.Select className="mb-3">
+                                <Form.Select className="mb-3" value={filter.qty} name="qty" onChange={OnChangeHandler}>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -198,7 +201,7 @@ export default function TicketForm() {
                 
                 
                     {tickets?.map((d) => 
-                    <div key={d.id} onClick={state.isLogin ? (() => HandleBuy.mutate(d.id)):(handleShowLogin)} style={{cursor:"pointer"}}>
+                    <div key={d.id} onChange={console.log(d.price)} onClick={state.isLogin ? (() => {HandleBuy.mutate(d.id, d.price)}):(handleShowLogin)} style={{cursor:"pointer"}}>
                        <TiketList items={d} />
                     </div>
                     )}

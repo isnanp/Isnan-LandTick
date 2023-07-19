@@ -2,16 +2,65 @@ import { Container, Row, Col, Button, } from "react-bootstrap"
 import ErrorIMG from "../assets/images/error.png"
 import Qr from "../assets/images/qr-code.png"
 import Logo from "../assets/images/trainwhite.png"
-import { Link } from "react-router-dom"
-import { useQuery } from "react-query"
+import { useNavigate } from "react-router-dom"
+import { useMutation, useQuery } from "react-query"
 import { API } from "../config/api"
+import { useEffect } from "react"
 
 export default function InvoiceComp(props) {
+	const navigate = useNavigate()
 	let { data: user } = useQuery("stationsCache", async () => {
     const response = await API.get("/user");
 	console.log("respon user invoice", response)
     return response.data.data;
     });
+
+	const handleBuy = useMutation (async () => {
+    try {
+
+      const response = await API.get(`/getpayment/${props.id}`);
+      
+      const token = response.data.data.token;
+      console.log("ini token", token)
+
+      window.snap.pay(token, {
+        onSuccess: function (result) {
+          console.log(result);
+          navigate("/tiketsaya");
+        },
+        onPending: function (result) {
+          console.log(result);
+          navigate("/tiketsaya");
+        },
+        onError: function (result) {
+          console.log(result);
+          navigate("/tiketsaya");
+        },
+        onClose: function () {
+          alert("tutup")
+        },
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  })
+
+  	useEffect (() => {
+    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY;
+
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  	}, []);
+
+
 
 
     return (
@@ -66,9 +115,9 @@ export default function InvoiceComp(props) {
 								<Col>{props?.priceTransaction}</Col>
 							</Row>
 						</Container>
-						<Link to={`/myticket/${props.id}`}>
-						<Button className="my-4 grad shadow" style={{width:"100%"}}>Bayar Sekarang</Button>
-						</Link>
+						
+						<Button onClick={() => handleBuy.mutate(props.id)} className="my-4 grad shadow" style={{width:"100%"}}>Bayar Sekarang</Button>
+						
 					</Col>
 				</Row>
 

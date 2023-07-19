@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"landtick/models"
 
 	"gorm.io/gorm"
@@ -12,6 +13,7 @@ type TransactionRepository interface {
 	GetTransaction(ID int) (models.Transaction, error)
 	DeleteTransaction(transaction models.Transaction, ID int) (models.Transaction, error)
 	GetTransactionByUser(UserID int) ([]models.Transaction, error)
+	UpdateTransaction(status string, ID int) (models.Transaction, error)
 }
 
 func RepositoryTransaction(db *gorm.DB) *repository {
@@ -51,4 +53,20 @@ func (r *repository) GetTransactionByUser(UserID int) ([]models.Transaction, err
 	err := r.db.Preload("User").Preload("Ticket").Preload("Ticket.StartStation").Preload("Ticket.DestinationStation").Where("user_id = ?", UserID).Find(&transactions).Error
 
 	return transactions, err
+}
+
+func (r *repository) UpdateTransaction(status string, ID int) (models.Transaction, error) {
+	var transaction models.Transaction
+	fmt.Println(status)
+
+	r.db.First(&transaction, ID)
+
+	if status != transaction.Status && status == "success" {
+		r.db.First(&transaction, transaction.ID)
+	}
+
+	transaction.Status = status
+	err := r.db.Save(&transaction).Error
+
+	return transaction, err
 }
