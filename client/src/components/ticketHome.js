@@ -8,24 +8,21 @@ import { useEffect, useState } from "react";
 import { UserContext } from "../context/usercontext";
 import { useContext } from "react";
 import { API } from "../config/api";
-import { useMutation, useQuery } from "react-query";
-
+import { useQuery } from "react-query";
 export default function TicketForm() {
 
+    let { data: stations } = useQuery("stationCache", async () => {
+        const response = await API.get("/stations");
+        return response.data.data;
+    });
+
+    const [ticketSelected, setTiketSelected] = useState()
+    const [price, setPrice] = useState()
+    
     const [state] = useContext(UserContext)
     const [showSuccess, setShowSuccess] = useState(false);
-
-    let { data: stations } = useQuery("stationCache", async () => {
-    const response = await API.get("/stations");
-    return response.data.data;
-    });
-    
     const handleCloseSuccess = () => {setShowSuccess(false)}
-    const [ticketSelected, setTiketSelected] = useState()
-    const handleShowSuccess = (a) => {
-        setShowSuccess(true);
-        setTiketSelected(a)
-    }
+    const handleShowSuccess = () => {setShowSuccess(true)}
 
     const [showLogin, setShowLogin] = useState(false);
     const handleCloseLogin = () => setShowLogin(false);
@@ -87,22 +84,6 @@ export default function TicketForm() {
         handleFilter()
     }, [filteredTicket])
 
-    const HandleBuy = useMutation(async (id, price) => {
-    try {
-        console.log(price)
-        let qty = parseInt(filter.qty)
-        const transaction = new FormData()
-        transaction.set("ticket_id", id)
-        transaction.set("qty", qty)
-        const response = await API.post("/transaction", transaction);
-        handleShowSuccess(response.data.data.id)
-        
-        return response.data.data;
-    } catch (error) {
-        alert("Transaction error: " + error)
-      console.log(error);
-    }
-  });
 
 //   console.log("COBA GET ID: ", tickets[1].id)
 
@@ -201,14 +182,14 @@ export default function TicketForm() {
                 
                 
                     {tickets?.map((d) => 
-                    <div key={d.id} onChange={console.log(d.price)} onClick={state.isLogin ? (() => {HandleBuy.mutate(d.id, d.price)}):(handleShowLogin)} style={{cursor:"pointer"}}>
+                    <div key={d.id} onChange={console.log(d.price)} onClick={state.isLogin ? (() => {setPrice(d.price); setTiketSelected(d.id); handleShowSuccess()}):(handleShowLogin)} style={{cursor:"pointer"}}>
                        <TiketList items={d} />
                     </div>
                     )}
                 
                     
 
-                    <ModalSuccess onShow={showSuccess} index={ticketSelected} onHide={handleCloseSuccess} />
+                    <ModalSuccess qty={filter.qty} price={price} onShow={showSuccess} id={ticketSelected} onHide={handleCloseSuccess} />
                     <LoginModal show={showLogin} onHide={handleCloseLogin} onClick={handleShowRegister} />
                     
             </Container>

@@ -48,10 +48,12 @@ func (h *transactionsHandlers) CreateTransaction(c echo.Context) error {
 	userId := userLogin.(jwt.MapClaims)["id"].(float64)
 	TicketID, _ := strconv.Atoi(c.FormValue("ticket_id"))
 	Qty, _ := strconv.Atoi(c.FormValue("qty"))
+	Price, _ := strconv.Atoi(c.FormValue("price"))
 
 	request.UserID = int(userId)
 	request.TicketID = TicketID
 	request.Qty = Qty
+	request.Price = Price
 
 	validation := validator.New()
 
@@ -75,6 +77,7 @@ func (h *transactionsHandlers) CreateTransaction(c echo.Context) error {
 		UserID:   request.UserID,
 		TicketID: request.TicketID,
 		Qty:      request.Qty,
+		Price:    request.Price,
 	}
 
 	data, err := h.TransactionRepository.CreateTransaction(data)
@@ -147,16 +150,14 @@ func (h *transactionsHandlers) GetPayment(c echo.Context) error {
 
 	// 1. Initiate Snap client
 	var s = snap.Client{}
-	s.New("SB-Mid-server-_QtOcCtXxx1t9R5YDotD0FeB", midtrans.Sandbox)
-	key := os.Getenv(("SERVER_KEY"))
-	fmt.Println(key)
+	s.New(os.Getenv("SERVER_KEY"), midtrans.Sandbox)
 	// Use to midtrans.Production if you want Production Environment (accept real transaction).
 
 	// 2. Initiate Snap request param
 	req := &snap.Request{
 		TransactionDetails: midtrans.TransactionDetails{
 			OrderID:  strconv.Itoa(transaction.ID),
-			GrossAmt: int64(transaction.Ticket.Price),
+			GrossAmt: int64(transaction.Price),
 		},
 		CreditCard: &snap.CreditCardDetails{
 			Secure: true,
@@ -219,8 +220,8 @@ func SendMail(status string, transaction models.Transaction) {
 		var CONFIG_SMTP_HOST = "smtp.gmail.com"
 		var CONFIG_SMTP_PORT = 587
 		var CONFIG_SENDER_NAME = "LandTick <demo.landtick@gmail.com>"
-		var CONFIG_AUTH_EMAIL = "isnan344@gmail.com"
-		var CONFIG_AUTH_PASSWORD = "namoxyzmzmnjsqsb"
+		var CONFIG_AUTH_EMAIL = os.Getenv("EMAIL_SYSTEM")
+		var CONFIG_AUTH_PASSWORD = os.Getenv("PASSWORD_SYSTEM")
 
 		var ticket = strconv.Itoa(transaction.ID)
 		var price = strconv.Itoa(transaction.Ticket.Price)

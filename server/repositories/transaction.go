@@ -29,7 +29,7 @@ func (r *repository) CreateTransaction(transaction models.Transaction) (models.T
 func (r *repository) FindTransaction() ([]models.Transaction, error) {
 	var transaction []models.Transaction
 
-	err := r.db.Preload("User").Preload("Ticket").Preload("Ticket.StartStation").Preload("Ticket.DestinationStation").Find(&transaction).Error
+	err := r.db.Preload("User").Preload("Ticket").Preload("Ticket.StartStation").Preload("Ticket.DestinationStation").Order("id DESC").Find(&transaction).Error
 
 	return transaction, err
 }
@@ -50,7 +50,7 @@ func (r *repository) DeleteTransaction(transaction models.Transaction, ID int) (
 
 func (r *repository) GetTransactionByUser(UserID int) ([]models.Transaction, error) {
 	var transactions []models.Transaction
-	err := r.db.Preload("User").Preload("Ticket").Preload("Ticket.StartStation").Preload("Ticket.DestinationStation").Where("user_id = ?", UserID).Find(&transactions).Error
+	err := r.db.Preload("User").Preload("Ticket").Preload("Ticket.StartStation").Preload("Ticket.DestinationStation").Where("user_id = ?", UserID).Order("id DESC").Find(&transactions).Error
 
 	return transactions, err
 }

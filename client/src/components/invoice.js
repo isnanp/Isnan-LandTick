@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { useMutation, useQuery } from "react-query"
 import { API } from "../config/api"
 import { useEffect } from "react"
+import { FormatRupiah } from "@arismun/format-rupiah"
 
 export default function InvoiceComp(props) {
 	const navigate = useNavigate()
@@ -107,12 +108,12 @@ export default function InvoiceComp(props) {
 						<h1>Rincian Harga</h1>
 						<Container className="border border-1 shadow">
 							<Row className="p-3">
-								<Col>{props?.name_train} x 1 </Col>
-								<Col>{props?.priceTicket}</Col>
+								<Col>{props?.name_train} x {props.qty} </Col>
+								<Col><FormatRupiah value={props?.priceTicket}/></Col>
 							</Row>
 							<Row className="p-3" style={{backgroundColor:"#E6E6E6"}}>
 								<Col>Total</Col>
-								<Col>{props?.priceTransaction}</Col>
+								<Col><FormatRupiah value={props?.priceTransaction}/></Col>
 							</Row>
 						</Container>
 						

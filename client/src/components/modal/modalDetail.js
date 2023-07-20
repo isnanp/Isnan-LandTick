@@ -3,6 +3,7 @@ import Logo from "../../assets/images/trainwhite.png"
 import Barcode from "../../assets/images/barcode.png"
 import { useQuery } from "react-query";
 import { API } from "../../config/api";
+import { FormatRupiah } from "@arismun/format-rupiah";
 
 export default function ModalDetail(props) {
     let { data: transaction } = useQuery(["transactionCache", props.id], async () => {
@@ -84,7 +85,7 @@ export default function ModalDetail(props) {
 
             <Container fluid className="d-flex align-item-center justify-content-between p-1" style={{backgroundColor:"lightgray"}}>
                 <h2>TOTAL</h2>
-                <h2>{transaction?.price}</h2>
+                <FormatRupiah value={transaction?.price}/>
             </Container>
 
       </Modal.Body>

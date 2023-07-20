@@ -1,5 +1,6 @@
 import { Row, Col } from 'react-bootstrap';
 import Arrow from '../assets/images/Arrow 5.png';
+import { FormatRupiah } from "@arismun/format-rupiah";
 
 export default function TiketList({items}) {
     return (
@@ -25,7 +26,7 @@ export default function TiketList({items}) {
                     <strong className="fs-5">5 jam</strong> 
                     </Col>
                     <Col>
-                    <h5 style={{color:"pink"}}>{items?.price}</h5>
+                    <FormatRupiah value={items?.price}/>
                     </Col>
                 </Row>
            

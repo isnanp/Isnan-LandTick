@@ -1,15 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"landtick/database"
 	"landtick/pkg/mysql"
 	"landtick/routes"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+	godotenv.Load()
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -25,6 +29,9 @@ func main() {
 
 	e.Static("/uploads", "./uploads")
 
-	e.Logger.Fatal(e.Start(":5000"))
+	var PORT = os.Getenv("PORT")
+
+	fmt.Println("server running localhost:" + PORT)
+	e.Logger.Fatal(e.Start(":" + PORT))
 
 }
