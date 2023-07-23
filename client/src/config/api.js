@@ -5,6 +5,10 @@ export const API = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL
 });
 
+export const checkURL = () => {
+  console.log("CheckURL", process.env.REACT_APP_BASE_URL);
+}
+
 // Set Authorization Token Header
 export const setAuthToken = (token) => {
   if (token) {

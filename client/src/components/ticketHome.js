@@ -36,7 +36,8 @@ export default function TicketForm() {
         handleCloseLogin(false);
         setShowRegister(true);
     }
-    const [tickets, setTicket] = useState([])
+    // const [tickets, setTicket] = useState([])
+    const [filterStatus, setFilterStatus] = useState(false);
 
     const [filter, setfilter] = useState({
         startStation : "",
@@ -52,37 +53,41 @@ export default function TicketForm() {
     };
     console.log(filter)
 
-    let filtered = useQuery(["filteredCache", filter], async () => {
-    const response = await API.get(`/ticket/?start_station_id=${filter.startStation}&destination_station_id=${filter.DestinationStation}`);
+    let { data:tickets } = useQuery(["filteredCache", filterStatus], async () => {
+    const response = filterStatus? (
+        await API.get(`/ticket/?start_station_id=${filter.startStation}&destination_station_id=${filter.DestinationStation}`)
+    ) : ( 
+        await API.get(`/tickets`));
     console.log("ini log filter",response.data.data);
     return response.data.data;
     });
 
-    const {data : filteredTicket} = filtered
+    // const {data : filteredTicket} = filtered
     
-    let {data : nonFiltered} = useQuery("tiketCache", async () => {
-    const response = await API.get(`/tickets`);
-    console.log("ini log tickets",response.data.data);
-    return response.data.data;
-    })
-    const handleFilter = () => {
-        if (filteredTicket?.length > 0) {
-        setTicket(filteredTicket)
-    } else {
-        setTicket(nonFiltered)
-    }
-    }
+    // let {data : nonFiltered} = useQuery("tiketCache", async () => {
+    // const response = await API.get(`/tickets`);
+    // console.log("ini log tickets",response.data.data);
+    // return response.data.data;
+    // })
+    // const handleFilter = () => {
+    //     if (filteredTicket?.length > 0) {
+    //     setTicket(filteredTicket)
+    // } else {
+    //     setTicket(nonFiltered)
+    // }
+    // }
 
     const handleReset = () => {
+        setFilterStatus(false);
         setfilter({
             startStation : "",
             DestinationStation : "",
         })
     }
     
-    useEffect(() => {
-        handleFilter()
-    }, [filteredTicket])
+    // useEffect(() => {
+    //     handleFilter()
+    // }, [filteredTicket])
 
 
 //   console.log("COBA GET ID: ", tickets[1].id)
@@ -151,17 +156,11 @@ export default function TicketForm() {
                             </Form.Select>
                         </Col>
                         <Col>
-                            <h5>Bayi</h5>
-                                <Form.Select className="mb-3">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </Form.Select>
+                            <Button className="mt-4 grad " onClick={handleReset}>Reset Filter</Button>
                         </Col>
                         <Col >
-                            <Button className="mt-4 grad" onClick={handleReset}>Reset Filter</Button>
+                            
+                            <Button className="mt-4 grad" onClick={() => setFilterStatus(true)}>Cari Ticket</Button>
                         </Col>
                     </Row>
                 </Col>
@@ -181,11 +180,17 @@ export default function TicketForm() {
                     </Row>
                 
                 
-                    {tickets?.map((d) => 
+                    {filterStatus !== true ? (tickets?.map((d) => 
                     <div key={d.id} onChange={console.log(d.price)} onClick={state.isLogin ? (() => {setPrice(d.price); setTiketSelected(d.id); handleShowSuccess()}):(handleShowLogin)} style={{cursor:"pointer"}}>
                        <TiketList items={d} />
                     </div>
-                    )}
+                    )) : tickets?.length === 0 ? (
+                        <h1 className="text-center my-5">Ticket tidak ditemukan</h1>
+                    ) : (tickets?.map((d) => 
+                    <div key={d.id} onChange={console.log(d.price)} onClick={state.isLogin ? (() => {setPrice(d.price); setTiketSelected(d.id); handleShowSuccess()}):(handleShowLogin)} style={{cursor:"pointer"}}>
+                       <TiketList items={d} />
+                    </div>
+                    ))}
                 
                     
 

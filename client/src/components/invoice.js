@@ -27,15 +27,15 @@ export default function InvoiceComp(props) {
       window.snap.pay(token, {
         onSuccess: function (result) {
           console.log(result);
-          navigate("/tiketsaya");
+          navigate("/myticket");
         },
         onPending: function (result) {
           console.log(result);
-          navigate("/tiketsaya");
+          navigate("/myticket");
         },
         onError: function (result) {
           console.log(result);
-          navigate("/tiketsaya");
+          navigate("/myticket");
         },
         onClose: function () {
           alert("tutup")
