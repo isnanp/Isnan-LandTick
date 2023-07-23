@@ -38,6 +38,7 @@ export default function TicketForm() {
     }
     // const [tickets, setTicket] = useState([])
     const [filterStatus, setFilterStatus] = useState(false);
+    const [tickets, setTicket] = useState([])
 
     const [filter, setfilter] = useState({
         startStation : "",
@@ -53,7 +54,7 @@ export default function TicketForm() {
     };
     console.log(filter)
 
-    let { data:tickets, refetch } = useQuery(["filteredCache", filterStatus], async () => {
+    let { data:rawTickets, refetch } = useQuery(["filteredCache", filterStatus], async () => {
     const response = filterStatus? (
         await API.get(`/ticket/?start_station_id=${filter.startStation}&destination_station_id=${filter.DestinationStation}`)
     ) : ( 
@@ -61,6 +62,11 @@ export default function TicketForm() {
     console.log("ini log filter",response.data.data);
     return response.data.data;
     });
+
+    useEffect(() =>
+    setTicket(rawTickets)
+    ,[rawTickets])
+    
 
     // const {data : filteredTicket} = filtered
     
