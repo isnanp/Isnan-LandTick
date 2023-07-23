@@ -53,7 +53,7 @@ export default function TicketForm() {
     };
     console.log(filter)
 
-    let { data:tickets } = useQuery(["filteredCache", filterStatus], async () => {
+    let { data:tickets, refetch } = useQuery(["filteredCache", filterStatus], async () => {
     const response = filterStatus? (
         await API.get(`/ticket/?start_station_id=${filter.startStation}&destination_station_id=${filter.DestinationStation}`)
     ) : ( 
@@ -160,7 +160,7 @@ export default function TicketForm() {
                         </Col>
                         <Col >
                             
-                            <Button className="mt-4 grad" onClick={() => setFilterStatus(true)}>Cari Ticket</Button>
+                            <Button className="mt-4 grad" onClick={() => {setFilterStatus(true); refetch()}}>Cari Ticket</Button>
                         </Col>
                     </Row>
                 </Col>
