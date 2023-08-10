@@ -5,18 +5,18 @@ import { useContext } from "react";
 export const PrivateRoute = () => {
     const [state] = useContext(UserContext)
     
-    if (state.user.role !== "user") {
-        return <Navigate to="/" />
+    if (state.user.role === "user") {
+        return  <Outlet />
     }
 
-    return state.isLogin ? <Outlet /> : <Navigate to="/" />
+    return <Navigate to="/" />
 }
 
 export function PrivateRouteAdmin() {
     const [state] = useContext(UserContext);
 
-    if (state.user.role !== "admin") {
-        return <Navigate to="/" />
+    if (state.user.role === "admin") {
+        return <Outlet />
     }
-    return <Outlet />
+    return <Navigate to="/" />
 }
