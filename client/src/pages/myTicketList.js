@@ -3,7 +3,7 @@ import Footer from '../components/footer'
 import { useQuery } from 'react-query';
 import { API } from '../config/api';
 import ModalDetail from '../components/modal/modalDetail';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 
@@ -14,6 +14,7 @@ export default function MyTicketList() {
     return response.data.data;
     });
 
+    const [transactions, setTransactions] = useState([])
     const [id, setId] = useState()
     const [showDetail, setShowDetail] = useState(false);
     const handleCloseDetail = () => setShowDetail(false);
@@ -22,6 +23,9 @@ export default function MyTicketList() {
         setId(id)
     };
     
+    useEffect(() =>
+    setTransactions(myTransactions)
+    ,[myTransactions])
 
     return (
         <>
@@ -29,7 +33,7 @@ export default function MyTicketList() {
             <h1 className="ms-5">Ticket Saya</h1>
         </div>
 
-        {myTransactions?.map( transaction => (
+        {transactions?.map( transaction => (
             <div onClick={() => handleShowDetail(transaction?.id)} style={{cursor:"pointer"}}>
                 <Ticket id={transaction?.id} status={transaction?.status} nama={transaction?.ticket?.name_train} kelas={transaction?.ticket?.type_train} awal={transaction?.ticket?.start_station.name} kotaAwal={transaction?.ticket?.start_station.kota} akhir={transaction?.ticket?.destination_station.name} kotaAkhir={transaction?.ticket?.destination_station.kota} berangkat={transaction?.ticket?.start_time} tiba={transaction?.ticket?.arrival_time} />
             </div>
