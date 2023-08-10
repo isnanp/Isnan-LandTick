@@ -189,7 +189,7 @@ func (h *transactionsHandlers) Notification(c echo.Context) error {
 	order_Id, _ := strconv.Atoi(orderId)
 
 	transaction, _ := h.TransactionRepository.GetTransaction(order_Id)
-	// user, _ := h.UserRepository.GetUser(order_Id)
+
 	if transactionStatus == "capture" {
 		if fraudStatus == "challenge" {
 			h.TransactionRepository.UpdateTransaction("pending", order_Id)

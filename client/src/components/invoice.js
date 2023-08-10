@@ -22,19 +22,16 @@ export default function InvoiceComp(props) {
       const response = await API.get(`/getpayment/${props.id}`);
       
       const token = response.data.data.token;
-      console.log("ini token", token)
 
       window.snap.pay(token, {
         onSuccess: function (result) {
-          console.log(result);
           navigate("/myticket");
         },
         onPending: function (result) {
-          console.log(result);
           navigate("/myticket");
         },
         onError: function (result) {
-          console.log(result);
+
           navigate("/myticket");
         },
         onClose: function () {

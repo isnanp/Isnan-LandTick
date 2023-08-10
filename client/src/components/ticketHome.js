@@ -27,16 +27,9 @@ export default function TicketForm() {
     const [showLogin, setShowLogin] = useState(false);
     const handleCloseLogin = () => setShowLogin(false);
     const handleShowLogin= () => {
-        handleCloseRegister(false);
         setShowLogin(true);
     }
-    const [showRegister, setShowRegister] = useState(false);
-    const handleCloseRegister = () => setShowRegister(false);
-    const handleShowRegister = () => {
-        handleCloseLogin(false);
-        setShowRegister(true);
-    }
-    // const [tickets, setTicket] = useState([])
+
     const [filterStatus, setFilterStatus] = useState(false);
     const [tickets, setTicket] = useState([])
 
@@ -68,21 +61,6 @@ export default function TicketForm() {
     ,[rawTickets])
     
 
-    // const {data : filteredTicket} = filtered
-    
-    // let {data : nonFiltered} = useQuery("tiketCache", async () => {
-    // const response = await API.get(`/tickets`);
-    // console.log("ini log tickets",response.data.data);
-    // return response.data.data;
-    // })
-    // const handleFilter = () => {
-    //     if (filteredTicket?.length > 0) {
-    //     setTicket(filteredTicket)
-    // } else {
-    //     setTicket(nonFiltered)
-    // }
-    // }
-
     const handleReset = () => {
         setFilterStatus(false);
         setfilter({
@@ -90,13 +68,6 @@ export default function TicketForm() {
             DestinationStation : "",
         })
     }
-    
-    // useEffect(() => {
-    //     handleFilter()
-    // }, [filteredTicket])
-
-
-//   console.log("COBA GET ID: ", tickets[1].id)
 
     return (
         <>
@@ -201,7 +172,7 @@ export default function TicketForm() {
                     
 
                     <ModalSuccess qty={filter.qty} price={price} onShow={showSuccess} id={ticketSelected} onHide={handleCloseSuccess} />
-                    <LoginModal show={showLogin} onHide={handleCloseLogin} onClick={handleShowRegister} />
+                    <LoginModal show={showLogin} onHide={handleCloseLogin} onClick={handleCloseLogin} />
                     
             </Container>
             </>

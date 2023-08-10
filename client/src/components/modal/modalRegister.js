@@ -48,7 +48,7 @@ export default function Signup(props) {
         alert("Failed to register!");
           
     }
-    props.onClick();
+    props.onHide();
   });
  
 
