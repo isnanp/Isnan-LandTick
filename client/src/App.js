@@ -14,7 +14,7 @@ import MyTicketList from "./pages/myTicketList";
 
 function App() {
   const [state, dispatch] = useContext(UserContext)
-  const [isLoading, setIsLoading] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
   const checkUser = async () => {
@@ -39,22 +39,20 @@ function App() {
       }
     }
     
-    useEffect(() =>{
-      if (localStorage.token) {
-        setAuthToken(localStorage.token);
-        checkUser();
-      } else {
-        setIsLoading(false);
-      };
-    }, []);
-
     useEffect(() => {
-      if (!isLoading) {
-        if (state.isLogin === false) {
-          navigate("/");
-        }
-      }
-    }, [isLoading])
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+      checkUser();
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && !state.isLogin) {
+      navigate("/");
+    }
+  }, [isLoading]);
 
   return (
    <div>
