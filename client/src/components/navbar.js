@@ -6,7 +6,6 @@ import LoginModal from "./modal/modalLogin"
 import Register from "./modal/modalRegister"
 import Img from "../assets/images/logo.png"
 import Logout from "../assets/images/logout 1.png"
-import Bill from "../assets/images/bill 1.png"
 import TicketICon from "../assets/images/ticketIcon.png"
 import TambahTicket from "../assets/images/TambahTicket.png"
 import { Link, useNavigate } from "react-router-dom"
@@ -70,9 +69,6 @@ export default function NavbarPage() {
                                 <Dropdown.Menu>
                                     <Link to="/ticket/0" style={{textDecoration:"none"}}>
                                     <Dropdown.Item onClick={() => navigate("/myticket")}> <img src={TicketICon} alt="bill" style={{height:"1rem", paddingRight:"3px"}} /> Tiket Saya</Dropdown.Item>
-                                    </Link>
-                                    <Link to="/invoice" style={{textDecoration:"none"}}>
-                                    <Dropdown.Item href="#/action-2"> <img src={Bill} alt="bill" style={{height:"1rem", paddingRight:"3px"}} /> Payment</Dropdown.Item>
                                     </Link>
                                     <Dropdown.Item style={{borderTop:"2px solid pink"}} onClick={logout}> <img style={{height:"1rem", paddingRight:"3px"}} src={Logout} alt="logout" />Logout</Dropdown.Item> 
                                 </Dropdown.Menu>
