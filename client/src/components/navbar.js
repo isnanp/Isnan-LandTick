@@ -43,7 +43,7 @@ export default function NavbarPage() {
         <div>
             <Navbar expand="lg" className="bg-body-white shadow-sm">
                 <Container>
-                    <Link style={{textDecoration:"none"}} to="/">
+                    <Link style={{textDecoration:"none"}} to={state.user.role === "admin" ? "/list-trasaksi" : "/"}>
                         <h4 className="logoText" > Land Tick <img src={Img} alt="icon" style={{height:"2rem"}} /> </h4>
                     </Link>
                     
